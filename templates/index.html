@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0F4C5C">
+  <title>NurtureCare AI | Caring for Mothers. Connecting Lives.</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-button hamburger" id="menuOpen" aria-label="Open navigation menu">☰</button>
+    <a class="brand" href="#" aria-label="NurtureCare AI home" data-view-link="home">
+      <span class="brand-mark" aria-hidden="true">✚</span>
+      <span class="brand-copy"><strong>NurtureCare AI</strong><small>Caring for Mothers. Connecting Lives.</small></span>
+    </a>
+    <div class="top-actions">
+      <label class="sr-only" for="languageSelect">Language</label>
+      <select id="languageSelect" aria-label="Choose language">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="kn">ಕನ್ನಡ</option>
+      </select>
+      <button class="emergency-quick" id="emergencyQuick">🚨 Emergency</button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="drawer" id="drawer" aria-label="Main navigation">
+      <div class="drawer-head"><strong>Navigate</strong><button class="icon-button" id="menuClose" aria-label="Close navigation">×</button></div>
+      <button class="nav-item active" data-view="home"><span>⌂</span> Home</button>
+      <button class="nav-item" data-view="screening"><span>＋</span> Health Screening</button>
+      <button class="nav-item" data-view="emergency"><span>♡</span> Emergency & Referrals</button>
+      <button class="nav-item" data-view="reports"><span>▤</span> Health Reports</button>
+      <button class="nav-item" data-view="about"><span>ⓘ</span> About / Guidelines</button>
+    </aside>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <main class="main-content">
+      <section class="view active" id="view-home" aria-labelledby="homeTitle">
+        <div class="view-heading">
+          <div><p class="eyebrow">MATERNAL HEALTH SUPPORT</p><h1 id="homeTitle">Welcome to NurtureCare AI</h1><p class="subhead">Simple screening support for mothers and community health workers.</p></div>
+          <div class="abstract-symbol" aria-hidden="true"><span>✚</span><i></i><b></b></div>
+        </div>
+        <div class="summary-grid">
+          <article class="stat-card"><span class="stat-icon">▣</span><div><p>Saved screenings</p><strong id="statTotal">0</strong></div></article>
+          <article class="stat-card"><span class="stat-icon coral">!</span><div><p>Needs review / urgent</p><strong id="statReview">0</strong></div></article>
+          <article class="stat-card"><span class="stat-icon mint">↻</span><div><p>Waiting to sync</p><strong id="statQueue">0</strong></div></article>
+        </div>
+        <div class="home-grid">
+          <article class="panel">
+            <div class="panel-title"><div><p class="eyebrow">QUICK ACTION</p><h2>Start a health screening</h2></div><span class="round-icon">＋</span></div>
+            <p>Record blood pressure, pregnancy week, and reported warning symptoms. The demo explains which rules were triggered.</p>
+            <button class="primary-button" data-go="screening"><span data-i18n="openScreening">Open health screening</span>  <span>→</span>
+</button>
+            <p class="tiny-note">This prototype does not diagnose or rule out pregnancy complications.</p>
+          </article>
+          <article class="panel trend-panel">
+            <div class="panel-title"><div><p class="eyebrow">HEALTH TRENDS</p><h2>Blood pressure history</h2></div><span class="round-icon">⌁</span></div>
+            <div class="chart-wrap"><canvas id="bpChart" aria-label="Blood pressure trend chart"></canvas><p class="chart-empty" id="chartEmpty">Saved readings will appear here.</p></div>
+          </article>
+        </div>
+        <div class="bottom-banner"><span class="banner-icon">♥</span><p><strong>Concerned about a warning sign?</strong><br>Seek professional medical care. Severe symptoms need urgent attention.</p><button class="text-button" data-go="emergency">Emergency guidance →</button></div>
+      </section>
+
+      <section class="view" id="view-screening" aria-labelledby="screenTitle">
+        <div class="view-heading compact"><div><p class="eyebrow"> · DATA & SCREENING</p><h1 id="screenTitle">Health Screening</h1><p class="subhead">Complete the fields to receive a transparent demo explanation.</p></div><span class="section-symbol">✚</span></div>
+        <div class="screening-layout">
+          <form id="screenForm" class="panel screening-form">
+            <div class="form-grid">
+              <div class="field full"><label for="name">Name or demo ID <span class="optional">(avoid real personal data)</span></label><input id="name" name="name" maxlength="80" placeholder="e.g. Demo Mother 01" required></div>
+              <div class="field"><label for="weeks">Pregnancy week</label><input id="weeks" name="weeks" type="number" min="1" max="45" placeholder="1–45" required><small>Enter a whole number.</small></div>
+              <div class="field"><label for="systolic">Systolic BP (mmHg)</label><input id="systolic" name="systolic" type="number" min="50" max="300" placeholder="e.g. 120" required></div>
+              <div class="field"><label for="diastolic">Diastolic BP (mmHg)</label><input id="diastolic" name="diastolic" type="number" min="30" max="200" placeholder="e.g. 80" required></div>
+              <div class="field full"><fieldset><legend>Reported symptoms</legend><div class="symptom-grid">
+                <label class="check-option"><input type="checkbox" name="symptoms" value="heavy_bleeding"><span>Heavy bleeding</span></label>
+                <label class="check-option"><input type="checkbox" name="symptoms" value="seizure"><span>Seizure / convulsion</span></label>
+                <label class="check-option"><input type="checkbox" name="symptoms" value="difficulty_breathing"><span>Difficulty breathing</span></label>
+                <label class="check-option"><input type="checkbox" name="symptoms" value="severe_headache_vision"><span>Severe headache / vision changes</span></label>
+                <label class="check-option"><input type="checkbox" name="symptoms" value="severe_abdominal_pain"><span>Severe abdominal pain</span></label>
+                <label class="check-option"><input type="checkbox" name="symptoms" value="reduced_fetal_movement"><span>Reduced fetal movement</span></label>
+              </div></fieldset></div>
+            </div>
+            <div id="qualityMessage" class="quality-message" aria-live="polite">Data quality check: complete the form to validate entries.</div>
+            <div class="form-actions"><button type="button" class="secondary-button" id="saveDraft">Save draft on this device</button><button type="submit" class="primary-button">Review screening <span>→</span></button></div>
+          </form>
+          <aside class="panel screening-side"><div class="side-emblem">✦</div><h2>What this checks</h2><ul><li>Missing or implausible values</li><li>Inverted blood pressure values</li><li>Selected urgent warning symptoms</li><li>Illustrative BP warning thresholds</li></ul><div class="warning-note"><strong>Not a diagnosis.</strong> If you have severe symptoms, seek urgent medical care now. Do not wait for a result.</div></aside>
+        </div>
+        <article class="panel ml-demo-panel" aria-labelledby="mlDemoTitle">
+          <div class="panel-title"><div><p class="eyebrow">EXPERIMENTAL MACHINE LEARNING</p><h2 id="mlDemoTitle">AI Risk Prediction Demo</h2></div><span class="round-icon">✦</span></div>
+          <p>Enter six sample measurements to try the trained model. Use demo data only. This experimental prediction is not a diagnosis and must not be used to decide whether medical care is needed.</p>
+          <form id="mlDemoForm">
+            <div class="form-grid">
+              <div class="field"><label for="mlAge">Age (years)</label><input id="mlAge" name="age" type="number" min="10" max="70" step="1" placeholder="e.g. 25" required></div>
+              <div class="field"><label for="mlSystolic">Systolic BP (mmHg)</label><input id="mlSystolic" name="systolic" type="number" min="50" max="300" step="any" placeholder="e.g. 120" required></div>
+              <div class="field"><label for="mlDiastolic">Diastolic BP (mmHg)</label><input id="mlDiastolic" name="diastolic" type="number" min="30" max="200" step="any" placeholder="e.g. 80" required></div>
+              <div class="field"><label for="mlBs">Blood sugar (dataset units)</label><input id="mlBs" name="bs" type="number" min="1" max="500" step="any" placeholder="e.g. 7.5" required><small>Use the same units as the training dataset.</small></div>
+              <div class="field"><label for="mlBodyTemp">Body temperature (°F)</label><input id="mlBodyTemp" name="bodytemp" type="number" min="80" max="110" step="any" placeholder="e.g. 98.6" required></div>
+              <div class="field"><label for="mlHeartRate">Heart rate (beats/min)</label><input id="mlHeartRate" name="heartrate" type="number" min="20" max="250" step="any" placeholder="e.g. 76" required></div>
+            </div>
+            <div class="form-actions"><button type="submit" class="primary-button">Run AI demo prediction →</button></div>
+          </form>
+          <div id="mlResult" class="quality-message" aria-live="polite" hidden></div>
+          <p class="tiny-note">Experimental output only — not a diagnosis or clinically validated assessment. Never delay urgent medical care for this result.</p>
+        </article>
+
+        <div class="result-overlay" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-dialog"><button class="icon-button close-result" id="closeResult" aria-label="Close result">×</button><div class="result-symbol" id="resultSymbol">✓</div><p class="eyebrow">SCREENING EXPLANATION</p><h2 id="resultTitle">Screening result</h2><p id="resultText"></p><p class="tiny-note">This prototype is not clinically validated. No warning rule triggered does not mean everything is safe.</p><button class="primary-button" id="resultDone">Return to screening</button></div></div>
+      </section>
+
+      <section class="view" id="view-emergency" aria-labelledby="emergencyTitle">
+        <div class="view-heading compact"><div><p class="eyebrow"> · URGENT SUPPORT</p><h1 id="emergencyTitle">Emergency & Referrals</h1><p class="subhead">Quick links to help you contact services and prepare referral information.</p></div><span class="section-symbol coral-text">♥</span></div>
+        <div class="emergency-grid">
+          <article class="panel urgent-panel"><div class="urgent-heading"><span class="urgent-icon">!</span><div><p class="eyebrow">URGENT WARNING SIGNS</p><h2>Do not wait for an app result</h2></div></div><p>Heavy bleeding, seizure, severe breathing difficulty, severe headache with vision changes, severe abdominal pain, or reduced fetal movement need urgent professional assessment.</p><p><strong>Seek urgent medical care now.</strong> Contact your local emergency service or go to the nearest appropriate health facility.</p><a class="primary-button anchor-button" href="tel:112">Call 112 (India emergency number)</a><small>Check local emergency arrangements before deployment. This link does not confirm that a call connected.</small></article>
+          <article class="panel"><div class="panel-title"><div><p class="eyebrow">FIND CARE</p><h2>Nearby health facility</h2></div><span class="round-icon">⌖</span></div><p>Open a map search for hospitals or maternal health facilities near your chosen location.</p><label for="mapLocation">Town, village or area</label><input id="mapLocation" placeholder="Enter your area (optional)"><a class="primary-button anchor-button" id="mapLink" href="https://www.google.com/maps/search/maternity+hospital+near+me" target="_blank" rel="noopener">Search on Maps ↗</a><p class="tiny-note">Confirm the facility is open and provides the care needed.</p></article>
+          <article class="panel"><div class="panel-title"><div><p class="eyebrow">REFERRAL MESSAGE</p><h2>Prepare an SMS draft</h2></div><span class="round-icon">✉</span></div><label for="smsContact">Recipient phone number (optional)</label><input id="smsContact" type="tel" placeholder="Enter recipient number"><label for="smsDetails">Message details</label><textarea id="smsDetails" rows="3" placeholder="Add only information you choose to share"></textarea><div class="form-actions"><button class="secondary-button" id="makeSms">Create message</button><button class="primary-button" id="openSms">Open SMS app</button></div><p class="tiny-note" id="smsStatus" aria-live="polite">Nothing has been sent. Review the message before sending.</p></article>
+          <article class="panel"><div class="panel-title"><div><p class="eyebrow">FOLLOW-UP</p><h2>Referral steps</h2></div><span class="round-icon">✓</span></div><ol class="steps"><li>Seek care when needed.</li><li>Tell the health worker what symptoms occurred.</li><li>Use Health Reports to mark a follow-up status.</li></ol><button class="secondary-button" data-go="reports">Open health reports</button></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-reports" aria-labelledby="reportsTitle">
+        <div class="view-heading compact"><div><p class="eyebrow"> · HISTORY & FOLLOW-UP</p><h1 id="reportsTitle">Health Reports</h1><p class="subhead">Screening records saved to this local prototype and offline sync status.</p></div><span class="section-symbol">▤</span></div>
+        <div class="report-toolbar"><div class="sync-status"><span class="status-dot" id="onlineDot"></span><span id="onlineText">Checking connection…</span><span class="queue-pill" id="queueLabel">0 waiting</span></div><div><button class="secondary-button" id="syncNow">Sync queued drafts</button><button class="secondary-button" id="refreshReports">Refresh</button></div></div>
+        <div class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>Date / time</th><th>Demo ID</th><th>Week</th><th>BP (mmHg)</th><th>Explanation</th><th>Referral status</th></tr></thead><tbody id="reportRows"><tr><td colspan="6">Loading saved reports…</td></tr></tbody></table></div></div>
+        <p class="tiny-note">Local SQLite records are stored on the computer running Flask. Offline drafts remain in this browser until synchronized. This demo does not provide secure multi-user clinical record storage.</p>
+      </section>
+
+      <section class="view" id="view-about" aria-labelledby="aboutTitle">
+        <div class="view-heading compact"><div><p class="eyebrow">PROJECT INFORMATION</p><h1 id="aboutTitle">About / Guidelines</h1><p class="subhead">Designed for accessible, understandable maternal-health support.</p></div><span class="section-symbol">ⓘ</span></div>
+        <div class="about-grid">
+          <article class="panel"><span class="round-icon">✚</span><h2>Project vision</h2><p><strong>AI-Powered Maternal Health Risk Screening and Emergency Referral System.</strong> NurtureCare AI aims to help pregnant women and community health workers record selected health information, recognize possible warning signs, and find referral support—especially in rural and underserved areas.</p></article>
+          <article class="panel"><span class="round-icon">⌁</span><h2>Rural accessibility first</h2><p>No login barrier, readable controls, responsive layout, regional-language selector placeholder, and local draft queue are included in this prototype. Translation strings and full offline CDN replacement still need further implementation.</p></article>
+          <article class="panel"><span class="round-icon">⚕</span><h2>Medical safety</h2><p>This is a hackathon prototype, not a diagnosis, medical device, or replacement for a qualified healthcare professional. Rules are illustrative and have not been clinically validated. A reassuring result cannot rule out a complication.</p></article>
+          <article class="panel"><span class="round-icon">▣</span><h2>Privacy and data</h2><p>Use synthetic/demo data only. Browser local storage is not encrypted. Before real deployment, implement informed consent, secure access, encryption, retention controls, clinical review, and applicable privacy requirements.</p></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="urgent-modal" id="urgentModal" role="alertdialog" aria-modal="true" aria-labelledby="urgentModalTitle" hidden>
+    <div class="urgent-modal-card"><div class="urgent-icon large">!</div><p class="eyebrow">URGENT MEDICAL GUIDANCE</p><h2 id="urgentModalTitle">Seek urgent medical care now</h2><p>Severe warning symptoms need immediate professional assessment. Do not wait for the website, a model result, an internet connection, or a callback.</p><div class="form-actions"><button class="secondary-button" id="urgentDismiss">Close</button><a class="primary-button anchor-button" href="tel:112">Call emergency services</a></div><small>Verify local emergency contacts before deploying this prototype outside India.</small></div>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>
