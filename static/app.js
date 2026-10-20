@@ -232,10 +232,19 @@ $("mapLocation").addEventListener("input", () => {
   $("mapLink").href = `https://www.google.com/maps/search/${encodeURIComponent(q ? "maternity hospital " + q : "maternity hospital near me")}`;
 });
 $("makeSms").addEventListener("click", () => {
-  const detail = $("smsDetails").value.trim() || "Maternal health support request. Please contact me.";
+  const detail = $("smsDetails").value.trim();
+  const status = $("smsStatus");
+
+  if (!detail) {
+    status.textContent = "Please enter message details before creating the referral.";
+    $("smsDetails").focus();
+    return;
+  }
+
   const msg = `NurtureCare AI referral draft: ${detail}. Please contact me to coordinate care.`;
+
   $("smsDetails").value = msg;
-  $("smsStatus").textContent = "Draft prepared only. Nothing has been sent; review it and use Open SMS app if appropriate.";
+  status.textContent = "Draft prepared. Nothing has been sent. Review the message before opening your SMS app.";
 });
 $("openSms").addEventListener("click", () => {
   const phone = $("smsContact").value.trim().replace(/[^\d+]/g, "");
